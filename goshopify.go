@@ -53,6 +53,7 @@ type Client struct {
 	SmartCollection            SmartCollectionService
 	Customer                   CustomerService
 	CustomerAddress            CustomerAddressService
+	DraftOrder                 DraftOrderService
 	Order                      OrderService
 	Shop                       ShopService
 	Webhook                    WebhookService
@@ -194,6 +195,7 @@ func NewClient(app App, shopName, token string) *Client {
 	c.SmartCollection = &SmartCollectionServiceOp{client: c}
 	c.Customer = &CustomerServiceOp{client: c}
 	c.CustomerAddress = &CustomerAddressServiceOp{client: c}
+	c.DraftOrder = &DraftOrderServiceOp{client: c}
 	c.Order = &OrderServiceOp{client: c}
 	c.Shop = &ShopServiceOp{client: c}
 	c.Webhook = &WebhookServiceOp{client: c}
