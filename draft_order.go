@@ -50,7 +50,7 @@ type DraftOrderCountOptions struct {
 }
 
 // A struct for all available draft order list options.
-// See: https://help.shopify.com/api/reference/order#index
+// See: https://help.shopify.com/api/reference/orders/draftorder#index
 type DraftOrderListOptions struct {
 	Page              int       `url:"page,omitempty"`
 	Limit             int       `url:"limit,omitempty"`
@@ -70,132 +70,87 @@ type DraftOrderListOptions struct {
 
 // DraftOrder represents a Shopify order
 type DraftOrder struct {
-	ID                    int              `json:"id,omitempty"`
-	Name                  string           `json:"name,omitempty"`
-	Email                 string           `json:"email,omitempty"`
-	CreatedAt             *time.Time       `json:"created_at,omitempty"`
-	UpdatedAt             *time.Time       `json:"updated_at,omitempty"`
-	CancelledAt           *time.Time       `json:"cancelled_at,omitempty"`
-	ClosedAt              *time.Time       `json:"closed_at,omitempty"`
-	ProcessedAt           *time.Time       `json:"processed_at,omitempty"`
-	Customer              *Customer        `json:"customer,omitempty"`
-	BillingAddress        *Address         `json:"billing_address,omitempty"`
-	ShippingAddress       *Address         `json:"shipping_address,omitempty"`
-	Currency              string           `json:"currency,omitempty"`
-	TotalPrice            *decimal.Decimal `json:"total_price,omitempty"`
-	SubtotalPrice         *decimal.Decimal `json:"subtotal_price,omitempty"`
-	TotalDiscounts        *decimal.Decimal `json:"total_discounts,omitempty"`
-	TotalLineItemsPrice   *decimal.Decimal `json:"total_line_items_price,omitempty"`
-	TaxesIncluded         bool             `json:"taxes_included,omitempty"`
-	TotalTax              *decimal.Decimal `json:"total_tax,omitempty"`
-	TaxLines              []TaxLine        `json:"tax_lines,omitempty"`
-	TotalWeight           int              `json:"total_weight,omitempty"`
-	FinancialStatus       string           `json:"financial_status,omitempty"`
-	Fulfillments          []Fulfillment    `json:"fulfillments,omitempty"`
-	FulfillmentStatus     string           `json:"fulfillment_status,omitempty"`
-	Token                 string           `json:"token,omitempty"`
-	CartToken             string           `json:"cart_token,omitempty"`
-	Number                int              `json:"number,omitempty"`
-	OrderNumber           int              `json:"order_number,omitempty"`
-	Note                  string           `json:"note,omitempty"`
-	Test                  bool             `json:"test,omitempty"`
-	BrowserIp             string           `json:"browser_ip,omitempty"`
-	BuyerAcceptsMarketing bool             `json:"buyer_accepts_marketing,omitempty"`
-	CancelReason          string           `json:"cancel_reason,omitempty"`
-	NoteAttributes        []NoteAttribute  `json:"note_attributes,omitempty"`
-	DiscountCodes         []DiscountCode   `json:"discount_codes,omitempty"`
-	LineItems             []LineItem       `json:"line_items,omitempty"`
-	ShippingLines         []ShippingLines  `json:"shipping_lines,omitempty"`
-	Transactions          []Transaction    `json:"transactions,omitempty"`
-	AppID                 int              `json:"app_id,omitempty"`
-	CustomerLocale        string           `json:"customer_locale,omitempty"`
-	LandingSite           string           `json:"landing_site,omitempty"`
-	ReferringSite         string           `json:"referring_site,omitempty"`
-	SourceName            string           `json:"source_name,omitempty"`
-	ClientDetails         *ClientDetails   `json:"client_details,omitempty"`
-	Tags                  string           `json:"tags,omitempty"`
-	LocationId            int              `json:"location_id,omitempty"`
-	PaymentGatewayNames   []string         `json:"payment_gateway_names,omitempty"`
-	ProcessingMethod      string           `json:"processing_method,omitempty"`
-	Refunds               []Refund         `json:"refunds,omitempty"`
-	UserId                int              `json:"user_id,omitempty"`
-	OrderStatusUrl        string           `json:"order_status_url,omitempty"`
-	Gateway               string           `json:"gateway,omitempty"`
-	Confirmed             bool             `json:"confirmed,omitempty"`
-	TotalPriceUSD         *decimal.Decimal `json:"total_price_usd,omitempty"`
-	CheckoutToken         string           `json:"checkout_token,omitempty"`
-	Reference             string           `json:"reference,omitempty"`
-	SourceIdentifier      string           `json:"source_identifier,omitempty"`
-	SourceURL             string           `json:"source_url,omitempty"`
-	DeviceID              int              `json:"device_id,omitempty"`
-	Phone                 string           `json:"phone,omitempty"`
-	LandingSiteRef        string           `json:"landing_site_ref,omitempty"`
-	CheckoutID            int              `json:"checkout_id,omitempty"`
-	ContactEmail          string           `json:"contact_email,omitempty"`
-	Metafields            []Metafield      `json:"metafields,omitempty"`
+	ID              int                  `json:"id,omitempty"`
+	Name            string               `json:"name,omitempty"`
+	Email           string               `json:"email,omitempty"`
+	CreatedAt       *time.Time           `json:"created_at,omitempty"`
+	UpdatedAt       *time.Time           `json:"updated_at,omitempty"`
+	CompletedAt     *time.Time           `json:"completed_at,omitempty"`
+	OrderID         int                  `json:"order_id,omitempty"`
+	Customer        *Customer            `json:"customer,omitempty"`
+	BillingAddress  *Address             `json:"billing_address,omitempty"`
+	ShippingAddress *Address             `json:"shipping_address,omitempty"`
+	Currency        string               `json:"currency,omitempty"`
+	TotalPrice      *decimal.Decimal     `json:"total_price,omitempty"`
+	SubtotalPrice   *decimal.Decimal     `json:"subtotal_price,omitempty"`
+	Note            string               `json:"note,omitempty"`
+	NoteAttributes  []NoteAttribute      `json:"note_attributes,omitempty"`
+	InvoiceSentAt   *time.Time           `json:"invoice_sent_at,omitempty"`
+	InvoiceURL      string               `json:"invoice_url,omitempty"`
+	LineItems       []DraftOrderLineItem `json:"line_items,omitempty"`
+	ShippingLine    ShippingLine         `json:"shipping_line,omitempty"`
+	Tags            string               `json:"tags,omitempty"`
+	TaxExempt       bool                 `json:"tax_exempt,omitempty"`
+	TaxLines        []TaxLine            `json:"tax_lines,omitempty"`
+	AppliedDiscount AppliedDiscount      `json:applied_discount,omitempty`
+	TaxesIncluded   bool                 `json:"taxes_included,omitempty"`
+	TotalTax        *decimal.Decimal     `json:"total_tax,omitempty"`
+	Status          string               `json:"status,omitempty"`
+
+	//Fulfillments      []Fulfillment    `json:"fulfillments,omitempty"`
+	//FulfillmentStatus string           `json:"fulfillment_status,omitempty"`
+	//CartToken         string           `json:"cart_token,omitempty"`
+	//Transactions      []Transaction    `json:"transactions,omitempty"`
+	//Confirmed         bool             `json:"confirmed,omitempty"`
+	//TotalPriceUSD     *decimal.Decimal `json:"total_price_usd,omitempty"`
+	//CheckoutToken     string           `json:"checkout_token,omitempty"`
+	//Reference         string           `json:"reference,omitempty"`
+	//SourceIdentifier  string           `json:"source_identifier,omitempty"`
+	//SourceURL         string           `json:"source_url,omitempty"`
+	//DeviceID          int              `json:"device_id,omitempty"`
+	//LandingSiteRef    string           `json:"landing_site_ref,omitempty"`
+	//CheckoutID        int              `json:"checkout_id,omitempty"`
+	//ContactEmail      string           `json:"contact_email,omitempty"`
+
+	Metafields []Metafield `json:"metafields,omitempty"`
 }
 
-//type Address struct {
-//	ID           int     `json:"id,omitempty"`
-//	Address1     string  `json:"address1,omitempty"`
-//	Address2     string  `json:"address2,omitempty"`
-//	City         string  `json:"city,omitempty"`
-//	Company      string  `json:"company,omitempty"`
-//	Country      string  `json:"country,omitempty"`
-//	CountryCode  string  `json:"country_code,omitempty"`
-//	FirstName    string  `json:"first_name,omitempty"`
-//	LastName     string  `json:"last_name,omitempty"`
-//	Latitude     float64 `json:"latitude,omitempty"`
-//	Longitude    float64 `json:"longitude,omitempty"`
-//	Name         string  `json:"name,omitempty"`
-//	Phone        string  `json:"phone,omitempty"`
-//	Province     string  `json:"province,omitempty"`
-//	ProvinceCode string  `json:"province_code,omitempty"`
-//	Zip          string  `json:"zip,omitempty"`
-//}
+type ShippingLine struct {
+	Handle string           `json:"handle,omitempty"`
+	Price  *decimal.Decimal `json:"price,omitempty"`
+	Title  string           `json:"title,omitempty"`
+}
 
-//type DiscountCode struct {
-//	Amount *decimal.Decimal `json:"amount,omitempty"`
-//	Code   string           `json:"code,omitempty"`
-//	Type   string           `json:"type,omitempty"`
-//}
+type AppliedDiscount struct {
+	Title       string           `json:"title,omitempty"`
+	Description string           `json:"description,omitempty"`
+	Value       *decimal.Decimal `json:"value,omitempty"`
+	ValueType   string           `json:"value_type,omitempty"`
+	Amount      *decimal.Decimal `json:"amount,omitempty"`
+}
 
-//type LineItem struct {
-//	ID                         int              `json:"id,omitempty"`
-//	ProductID                  int              `json:"product_id,omitempty"`
-//	VariantID                  int              `json:"variant_id,omitempty"`
-//	Quantity                   int              `json:"quantity,omitempty"`
-//	Price                      *decimal.Decimal `json:"price,omitempty"`
-//	TotalDiscount              *decimal.Decimal `json:"total_discount,omitempty"`
-//	Title                      string           `json:"title,omitempty"`
-//	VariantTitle               string           `json:"variant_title,omitempty"`
-//	Name                       string           `json:"name,omitempty"`
-//	SKU                        string           `json:"sku,omitempty"`
-//	Vendor                     string           `json:"vendor,omitempty"`
-//	GiftCard                   bool             `json:"gift_card,omitempty"`
-//	Taxable                    bool             `json:"taxable,omitempty"`
-//	FulfillmentService         string           `json:"fulfillment_service,omitempty"`
-//	RequiresShipping           bool             `json:"requires_shipping,omitempty"`
-//	VariantInventoryManagement string           `json:"variant_inventory_management,omitempty"`
-//	PreTaxPrice                *decimal.Decimal `json:"pre_tax_price,omitempty"`
-//	Properties                 []NoteAttribute  `json:"properties,omitempty"`
-//	ProductExists              bool             `json:"product_exists,omitempty"`
-//	FulfillableQuantity        int              `json:"fulfillable_quantity,omitempty"`
-//	Grams                      int              `json:"grams,omitempty"`
-//	FulfillmentStatus          string           `json:"fulfillment_status,omitempty"`
-//	TaxLines                   []TaxLine        `json:"tax_lines,omitempty"`
-//	OriginLocation             *Address         `json:"origin_location,omitempty"`
-//	DestinationLocation        *Address         `json:"destination_location,omitempty"`
-//}
-
-//type LineItemProperty struct {
-//	Message string `json:"message"`
-//}
-//
-//type NoteAttribute struct {
-//	Name  string      `json:"name,omitempty"`
-//	Value interface{} `json:"value,omitempty"`
-//}
+type DraftOrderLineItem struct {
+	ID                  int              `json:"id,omitempty"`
+	ProductID           int              `json:"product_id,omitempty"`
+	VariantID           int              `json:"variant_id,omitempty"`
+	Quantity            int              `json:"quantity,omitempty"`
+	Price               *decimal.Decimal `json:"price,omitempty"`
+	AppliedDiscount     AppliedDiscount  `json:"applied_discount,omitempty"`
+	TaxLines            []TaxLine        `json:"tax_lines,omitempty"`
+	Taxable             bool             `json:"taxable,omitempty"`
+	Properties          []NoteAttribute  `json:"properties,omitempty"`
+	GiftCard            bool             `json:"gift_card,omitempty"`
+	Name                string           `json:"name,omitempty"`
+	Vendor              string           `json:"vendor,omitempty"`
+	VariantTitle        string           `json:"variant_title,omitempty"`
+	Title               string           `json:"title,omitempty"`
+	SKU                 string           `json:"sku,omitempty"`
+	RequiresShipping    bool             `json:"requires_shipping,omitempty"`
+	Grams               int              `json:"grams,omitempty"`
+	FulfillmentService  string           `json:"fulfillment_service,omitempty"`
+	FulfillableQuantity int              `json:"fulfillable_quantity,omitempty"`
+	Custom              bool             `json:"custom,omitempty"`
+}
 
 // Represents the result from the draftOrders/X.json endpoint
 type DraftOrderResource struct {
@@ -206,83 +161,6 @@ type DraftOrderResource struct {
 type DraftOrdersResource struct {
 	Orders []DraftOrder `json:"draft_orders"`
 }
-
-//type PaymentDetails struct {
-//	AVSResultCode     string `json:"avs_result_code,omitempty"`
-//	CreditCardBin     string `json:"credit_card_bin,omitempty"`
-//	CVVResultCode     string `json:"cvv_result_code,omitempty"`
-//	CreditCardNumber  string `json:"credit_card_number,omitempty"`
-//	CreditCardCompany string `json:"credit_card_company,omitempty"`
-//}
-//
-//type ShippingLines struct {
-//	ID                            int              `json:"id,omitempty"`
-//	Title                         string           `json:"title,omitempty"`
-//	Price                         *decimal.Decimal `json:"price,omitempty"`
-//	Code                          string           `json:"code,omitempty"`
-//	Source                        string           `json:"source,omitempty"`
-//	Phone                         string           `json:"phone,omitempty"`
-//	RequestedFulfillmentServiceID string           `json:"requested_fulfillment_service_id,omitempty"`
-//	DeliveryCategory              string           `json:"delivery_category,omitempty"`
-//	CarrierIdentifier             string           `json:"carrier_identifier,omitempty"`
-//	TaxLines                      []TaxLine        `json:"tax_lines,omitempty"`
-//}
-//
-//type TaxLine struct {
-//	Title string           `json:"title,omitempty"`
-//	Price *decimal.Decimal `json:"price,omitempty"`
-//	Rate  *decimal.Decimal `json:"rate,omitempty"`
-//}
-//
-//type Transaction struct {
-//	ID             int              `json:"id,omitempty"`
-//	DraftOrderID   int              `json:"order_id,omitempty"`
-//	Amount         *decimal.Decimal `json:"amount,omitempty"`
-//	Kind           string           `json:"kind,omitempty"`
-//	Gateway        string           `json:"gateway,omitempty"`
-//	Status         string           `json:"status,omitempty"`
-//	Message        string           `json:"message,omitempty"`
-//	CreatedAt      *time.Time       `json:"created_at,omitempty"`
-//	Test           bool             `json:"test,omitempty"`
-//	Authorization  string           `json:"authorization,omitempty"`
-//	Currency       string           `json:"currency,omitempty"`
-//	LocationID     *int             `json:"location_id,omitempty"`
-//	UserID         *int             `json:"user_id,omitempty"`
-//	ParentID       *int             `json:"parent_id,omitempty"`
-//	DeviceID       *int             `json:"device_id,omitempty"`
-//	ErrorCode      string           `json:"error_code,omitempty"`
-//	SourceName     string           `json:"source_name,omitempty"`
-//	PaymentDetails *PaymentDetails  `json:"payment_details,omitempty"`
-//}
-//
-//type ClientDetails struct {
-//	AcceptLanguage string `json:"accept_language,omitempty"`
-//	BrowserHeight  int    `json:"browser_height,omitempty"`
-//	BrowserIp      string `json:"browser_ip,omitempty"`
-//	BrowserWidth   int    `json:"browser_width,omitempty"`
-//	SessionHash    string `json:"session_hash,omitempty"`
-//	UserAgent      string `json:"user_agent,omitempty"`
-//}
-//
-//type Refund struct {
-//	Id              int              `json:"id,omitempty"`
-//	OrderId         int              `json:"order_id,omitempty"`
-//	CreatedAt       *time.Time       `json:"created_at,omitempty"`
-//	Note            string           `json:"note,omitempty"`
-//	Restock         bool             `json:"restock,omitempty"`
-//	UserId          int              `json:"user_id,omitempty"`
-//	RefundLineItems []RefundLineItem `json:"refund_line_items,omitempty"`
-//	Transactions    []Transaction    `json:"transactions,omitempty"`
-//}
-//
-//type RefundLineItem struct {
-//	Id         int              `json:"id,omitempty"`
-//	Quantity   int              `json:"quantity,omitempty"`
-//	LineItemId int              `json:"line_item_id,omitempty"`
-//	LineItem   *LineItem        `json:"line_item,omitempty"`
-//	Subtotal   *decimal.Decimal `json:"subtotal,omitempty"`
-//	TotalTax   *decimal.Decimal `json:"total_tax,omitempty"`
-//}
 
 // List draftOrders
 func (s *DraftOrderServiceOp) List(options interface{}) ([]DraftOrder, error) {
@@ -325,85 +203,85 @@ func (s *DraftOrderServiceOp) Update(order DraftOrder) (*DraftOrder, error) {
 	return resource.Order, err
 }
 
-// List metafields for an order
+// List metafields for a draft order
 func (s *DraftOrderServiceOp) ListMetafields(orderID int, options interface{}) ([]Metafield, error) {
 	metafieldService := &MetafieldServiceOp{client: s.client, resource: draftOrdersResourceName, resourceID: orderID}
 	return metafieldService.List(options)
 }
 
-// Count metafields for an order
+// Count metafields for a draft order
 func (s *DraftOrderServiceOp) CountMetafields(orderID int, options interface{}) (int, error) {
 	metafieldService := &MetafieldServiceOp{client: s.client, resource: draftOrdersResourceName, resourceID: orderID}
 	return metafieldService.Count(options)
 }
 
-// Get individual metafield for an order
+// Get individual metafield for a draft order
 func (s *DraftOrderServiceOp) GetMetafield(orderID int, metafieldID int, options interface{}) (*Metafield, error) {
 	metafieldService := &MetafieldServiceOp{client: s.client, resource: draftOrdersResourceName, resourceID: orderID}
 	return metafieldService.Get(metafieldID, options)
 }
 
-// Create a new metafield for an order
+// Create a new metafield for a draft order
 func (s *DraftOrderServiceOp) CreateMetafield(orderID int, metafield Metafield) (*Metafield, error) {
 	metafieldService := &MetafieldServiceOp{client: s.client, resource: draftOrdersResourceName, resourceID: orderID}
 	return metafieldService.Create(metafield)
 }
 
-// Update an existing metafield for an order
+// Update an existing metafield for a draft order
 func (s *DraftOrderServiceOp) UpdateMetafield(orderID int, metafield Metafield) (*Metafield, error) {
 	metafieldService := &MetafieldServiceOp{client: s.client, resource: draftOrdersResourceName, resourceID: orderID}
 	return metafieldService.Update(metafield)
 }
 
-// Delete an existing metafield for an order
+// Delete an existing metafield for a draft order
 func (s *DraftOrderServiceOp) DeleteMetafield(orderID int, metafieldID int) error {
 	metafieldService := &MetafieldServiceOp{client: s.client, resource: draftOrdersResourceName, resourceID: orderID}
 	return metafieldService.Delete(metafieldID)
 }
 
-// List fulfillments for an order
+// List fulfillments for a draft order
 func (s *DraftOrderServiceOp) ListFulfillments(orderID int, options interface{}) ([]Fulfillment, error) {
 	fulfillmentService := &FulfillmentServiceOp{client: s.client, resource: draftOrdersResourceName, resourceID: orderID}
 	return fulfillmentService.List(options)
 }
 
-// Count fulfillments for an order
+// Count fulfillments for a draft order
 func (s *DraftOrderServiceOp) CountFulfillments(orderID int, options interface{}) (int, error) {
 	fulfillmentService := &FulfillmentServiceOp{client: s.client, resource: draftOrdersResourceName, resourceID: orderID}
 	return fulfillmentService.Count(options)
 }
 
-// Get individual fulfillment for an order
+// Get individual fulfillment for a draft order
 func (s *DraftOrderServiceOp) GetFulfillment(orderID int, fulfillmentID int, options interface{}) (*Fulfillment, error) {
 	fulfillmentService := &FulfillmentServiceOp{client: s.client, resource: draftOrdersResourceName, resourceID: orderID}
 	return fulfillmentService.Get(fulfillmentID, options)
 }
 
-// Create a new fulfillment for an order
+// Create a new fulfillment for a draft order
 func (s *DraftOrderServiceOp) CreateFulfillment(orderID int, fulfillment Fulfillment) (*Fulfillment, error) {
 	fulfillmentService := &FulfillmentServiceOp{client: s.client, resource: draftOrdersResourceName, resourceID: orderID}
 	return fulfillmentService.Create(fulfillment)
 }
 
-// Update an existing fulfillment for an order
+// Update an existing fulfillment for a draft order
 func (s *DraftOrderServiceOp) UpdateFulfillment(orderID int, fulfillment Fulfillment) (*Fulfillment, error) {
 	fulfillmentService := &FulfillmentServiceOp{client: s.client, resource: draftOrdersResourceName, resourceID: orderID}
 	return fulfillmentService.Update(fulfillment)
 }
 
-// Complete an existing fulfillment for an order
+// Complete an existing fulfillment for a draft order
 func (s *DraftOrderServiceOp) CompleteFulfillment(orderID int, fulfillmentID int) (*Fulfillment, error) {
 	fulfillmentService := &FulfillmentServiceOp{client: s.client, resource: draftOrdersResourceName, resourceID: orderID}
 	return fulfillmentService.Complete(fulfillmentID)
 }
 
-// Transition an existing fulfillment for an order
+// Transition an existing fulfillment for a draft order
 func (s *DraftOrderServiceOp) TransitionFulfillment(orderID int, fulfillmentID int) (*Fulfillment, error) {
 	fulfillmentService := &FulfillmentServiceOp{client: s.client, resource: draftOrdersResourceName, resourceID: orderID}
 	return fulfillmentService.Transition(fulfillmentID)
 }
 
-// Cancel an existing fulfillment for an order
+// Cancel an existing fulfillment for a draft order
 func (s *DraftOrderServiceOp) CancelFulfillment(orderID int, fulfillmentID int) (*Fulfillment, error) {
 	fulfillmentService := &FulfillmentServiceOp{client: s.client, resource: draftOrdersResourceName, resourceID: orderID}
 	return fulfillmentService.Cancel(fulfillmentID)
