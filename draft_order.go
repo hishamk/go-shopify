@@ -19,6 +19,7 @@ type DraftOrderService interface {
 	Get(int, interface{}) (*DraftOrder, error)
 	Create(DraftOrder) (*DraftOrder, error)
 	Update(DraftOrder) (*DraftOrder, error)
+	Complete(orderID int, paymentPending bool) (*DraftOrder, error)
 
 	// MetafieldsService used for DraftOrder resource to communicate with Metafields resource
 	MetafieldsService
@@ -237,6 +238,16 @@ func (s *DraftOrderServiceOp) UpdateMetafield(orderID int, metafield Metafield) 
 func (s *DraftOrderServiceOp) DeleteMetafield(orderID int, metafieldID int) error {
 	metafieldService := &MetafieldServiceOp{client: s.client, resource: draftOrdersResourceName, resourceID: orderID}
 	return metafieldService.Delete(metafieldID)
+}
+
+// Mark a draft order as completed
+
+// Complete an existing fulfillment
+func (s *DraftOrderServiceOp) Complete(orderID int, paymentPending bool) (*DraftOrder, error) {
+	path := fmt.Sprintf("%s/%d/complete.json?payment_pending=%t", draftOrdersBasePath, orderID, paymentPending)
+	resource := new(DraftOrderResource)
+	err := s.client.Put(path, nil, resource)
+	return resource.Order, err
 }
 
 // List fulfillments for a draft order
