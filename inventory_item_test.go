@@ -3,7 +3,7 @@ package goshopify
 import (
 	"testing"
 
-	httpmock "gopkg.in/jarcoal/httpmock.v1"
+	 "github.com/jarcoal/httpmock"
 )
 
 func inventoryItemTests(t *testing.T, item *InventoryItem) {
